@@ -56,6 +56,8 @@ EOL
 
 chmod +x /opt/supervisor-scripts/wan2gp.sh
 
+
+
 # Generate the supervisor config files
 cat > /etc/supervisor/conf.d/wan2gp.conf << 'EOL'
 [program:wan2gp]
@@ -85,3 +87,11 @@ supervisorctl update
 curl -o big-files-print https://raw.githubusercontent.com/spinal-cord/misc-scripts/refs/heads/main/big-files-print
 chmod +x big-files-print
 mv big-files-print /usr/local/bin/big-files-print
+
+# Create Wan2GP restart scripts
+cat > /usr/local/bin/restart << 'EOL'
+#!/bin/bash
+supervisorctl restart wan2gp
+EOL
+
+chmod +x /usr/local/bin/restart
