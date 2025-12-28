@@ -1,0 +1,70 @@
+#!/bin/bash
+
+# Script to display the top N largest files and directories in the root filesystem,
+# with hardcoded exclusions for common large or irrelevant directories and patterns.
+# Hardcoded exclusions:
+#   Directories: /proc, /sys, /dev, /run, /mnt, /media, /tmp, /var/log, /var/cache
+#   Patterns: *.log, *.tmp, /usr*, /venv*, /opt*, /usr*
+# Usage: sudo ./disk_usage_excluder.sh [N]
+#   N: Optional integer for the number of top items to display (default: 35)
+# Note: Run with sudo for full access.
+# The output mimics LS_COLORS-based coloring: directories green, archives (e.g., .7z) red,
+# AI weights purple, regular files white, etc.
+
+# Default number of files
+num_files=35
+
+# Parse optional argument
+if [[ $# -gt 0 && $1 =~ ^[0-9]+$ ]]; then
+    num_files=$1
+fi
+
+# Hardcoded exclusions
+exclude_dirs=("/proc" "/sys" "/dev" "/run" "/mnt" "/media" "/tmp" "/var/log" "/var/cache")
+exclude_patterns=("*.log" "*.tmp" "/usr*" "/venv*" "/opt*" "/usr*" "/workspace/.hf_home*" "/var*" "/.uv*" "/root*" "/tmp*" "/workspace/Wan2GP/.git*")
+
+# Function to color a line based on file type (simulating LS_COLORS)
+color_line() {
+    local line="$1"
+    local size path
+    size=$(echo "$line" | awk '{print $1}')
+    path=$(echo "$line" | awk '{$1=""; print substr($0,2)}')
+    
+    # Determine color based on path
+    if [[ -d "$path" ]]; then
+        # Directory: green
+        echo -e "\e[1;32m$size\e[0m \e[1;32m$path\e[0m"
+    elif [[ "$path" =~ \.(7z|zip|tar|gz|bz2|xz|ckpt|pkl)$ ]]; then
+        # Archives: red
+        echo -e "\e[1;31m$size\e[0m \e[1;31m$path\e[0m"
+    elif [[ "$path" =~ \.(safetensors|pt|pth|savemodel|h5|onnx|gguf|ggml|tflite|mlmodel|bin)$ ]]; then
+        # AI weights: purple
+        echo -e "\e[1;34m$size\e[0m \e[1;34m$path\e[0m"
+    else
+        # Regular files: white
+        echo "$size $path"
+    fi
+}
+
+# Start with the base du command
+cmd="du -ahx /"
+
+# Add grep -v for each excluded directory (excludes paths starting with that directory)
+for dir in "${exclude_dirs[@]}"; do
+    cmd="$cmd | grep -v '^$dir'"
+done
+
+# Add grep -v for each excluded pattern (excludes paths matching the regex)
+for pat in "${exclude_patterns[@]}"; do
+    # Convert shell pattern to regex: * becomes .*, . becomes \.
+    regex_pat=$(echo "$pat" | sed 's/\./\\./g; s/\*/.*/g')
+    cmd="$cmd | grep -v '$regex_pat\$'"
+done
+
+# Add sorting and head
+cmd="$cmd | sort -rh | head -n $num_files"
+
+# Execute the command and color each line
+eval "$cmd" | while IFS= read -r line; do
+    color_line "$line"
+done
