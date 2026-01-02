@@ -95,3 +95,8 @@ supervisorctl restart wan2gp
 EOL
 
 chmod +x /usr/local/bin/restart
+
+cd /workspace/Wan2GP/
+git clone https://github.com/spinal-cord/SageAttention.git
+cd SageAttention
+python setup.py install
