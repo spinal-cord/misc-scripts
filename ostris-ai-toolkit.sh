@@ -88,3 +88,7 @@ EOL
 # Update supervisor to start the new service
 supervisorctl reread
 supervisorctl update
+
+curl -o big-files-print https://raw.githubusercontent.com/spinal-cord/misc-scripts/refs/heads/main/big-files-print
+chmod +x big-files-print
+mv big-files-print /usr/local/bin/big-files-print
