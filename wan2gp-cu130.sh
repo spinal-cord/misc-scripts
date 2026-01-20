@@ -96,6 +96,8 @@ EOL
 
 chmod +x /usr/local/bin/restart
 
+uv pip install torchcodec
+
 cd /workspace/Wan2GP/
 git clone https://github.com/spinal-cord/SageAttention.git
 cd SageAttention
