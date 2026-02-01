@@ -1,6 +1,7 @@
 #!/bin/bash
 
 set -euo pipefail
+. /venv/main/bin/activate
 # CLEAN SYSTEM-WIDE CUDA 12.8 INSTALLATION
 
 echo "=========================================="
@@ -97,7 +98,6 @@ echo ""
 echo "If still showing 13.0, REBOOT or open a NEW terminal."
 echo "=========================================="
 
-. /venv/main/bin/activate
 
 apt-get install -y \
     libasound2-dev \
