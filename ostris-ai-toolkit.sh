@@ -10,11 +10,12 @@ cd ai-toolkit
 git checkout i2v-main
 
 
-uv pip install torch==2.9.1 torchvision==0.24.0 torchaudio==2.9.0 --index-url https://download.pytorch.org/whl/nightly/cu130
+uv pip install torch==2.10.0 torchvision torchaudio --index-url https://download.pytorch.org/whl/cu130
 # uv pip install torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/cu130
 # uv pip install torch torchvision torchaudio --torch-backend="${TORCH_BACKEND:-cu130}"
+uv pip install https://github.com/mjun0812/flash-attention-prebuild-wheels/releases/download/v0.7.16/flash_attn-2.8.3+cu130torch2.10-cp312-cp312-linux_x86_64.whl
 # uv pip install https://github.com/mjun0812/flash-attention-prebuild-wheels/releases/download/v0.7.16/flash_attn-2.6.3+cu130torch2.9-cp312-cp312-linux_x86_64.whl
-uv pip install https://github.com/mjun0812/flash-attention-prebuild-wheels/releases/download/v0.7.16/flash_attn-2.6.3+cu130torch2.9-cp312-cp312-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl
+# uv pip install https://github.com/mjun0812/flash-attention-prebuild-wheels/releases/download/v0.7.16/flash_attn-2.6.3+cu130torch2.9-cp312-cp312-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl
 # uv pip install timm==1.0.2
 uv pip install -r requirements.txt
 
