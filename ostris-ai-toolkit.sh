@@ -5,34 +5,13 @@ set -euo pipefail
 . /venv/main/bin/activate
 
 cd "$WORKSPACE"
-[[ -d "${WORKSPACE}/ai-toolkit" ]] || git clone https://github.com/relaxis/ai-toolkit.git
+[[ -d "${WORKSPACE}/ai-toolkit" ]] || git clone https://github.com/spinal-cord/ai-toolkit.git
 cd ai-toolkit
-git checkout feature/sageattention-wan-support
+# git checkout feature/sageattention-wan-support
 
-
-uv pip install --no-cache-dir torch==2.7.0 torchvision==0.22.0 torchaudio==2.7.0 --index-url https://download.pytorch.org/whl/cu126
-
-#uv pip install torch==${TORCH_VERSION:-2.7.0} torchvision torchaudio --torch-backend="${TORCH_BACKEND:-cu128}"
-#uv pip install timm==1.0.22
+uv pip install torch torchvision torchaudio --torch-backend="${TORCH_BACKEND:-cu130}"
+uv pip install timm==1.0.22
 uv pip install -r requirements.txt
-
-python3 -c "import torch; print(f'PyTorch {torch.__version__}')"
-# python3 -c "import sageattention; print('SageAttention installed')"
-
-wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2404/x86_64/cuda-keyring_1.1-1_all.deb
-sudo dpkg -i cuda-keyring_1.1-1_all.deb
-sudo apt-get update
-sudo apt-get install cuda-toolkit-12-8
-
-export CUDA_HOME=/usr/local/cuda-12.8
-export TORCH_CUDA_ARCH_LIST="10.0+PTX"  # Blackwell architecture
-FLASH_ATTENTION_FORCE_BUILD=TRUE MAX_JOBS=8 uv pip install flash-attn --no-build-isolation
-
-sudo apt-get install cuda-toolkit-12-6
-export CUDA_HOME=/usr/local/cuda-12.6
-
-python -c "import flash_attn; print('Flash Attention OK')"
-nvidia-smi  # Should show CUDA 12.8
 
 # Create AI Toolkit startup script
 cat > /opt/supervisor-scripts/ai-toolkit.sh << 'EOL'
