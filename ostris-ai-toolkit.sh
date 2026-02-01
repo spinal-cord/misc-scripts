@@ -16,7 +16,7 @@ uv pip install -r requirements.txt
 
 export CUDA_HOME=/usr/local/cuda-13.0  # Point to CUDA 13.0
 export TORCH_CUDA_ARCH_LIST="10.0+PTX"  # Blackwell compute capability
-FLASH_ATTENTION_FORCE_BUILD=TRUE MAX_JOBS=8 pip install flash-attn --no-build-isolation
+FLASH_ATTENTION_FORCE_BUILD=TRUE MAX_JOBS=8 uv pip install flash-attn --no-build-isolation
 
 
 # Create AI Toolkit startup script
