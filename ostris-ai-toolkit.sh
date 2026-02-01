@@ -5,11 +5,13 @@ set -euo pipefail
 . /venv/main/bin/activate
 
 cd "$WORKSPACE"
-[[ -d "${WORKSPACE}/ai-toolkit" ]] || git clone https://github.com/spinal-cord/ai-toolkit.git
+[[ -d "${WORKSPACE}/ai-toolkit" ]] || git clone https://github.com/relaxis/ai-toolkit.git
 cd ai-toolkit
-git checkout i2v-main
+git checkout sageattention-wan-support
 
-uv pip install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/cu130
+
+uv pip install --no-cache-dir torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu128
+
 #uv pip install torch==${TORCH_VERSION:-2.7.0} torchvision torchaudio --torch-backend="${TORCH_BACKEND:-cu128}"
 uv pip install timm==1.0.22
 uv pip install -r requirements.txt
@@ -20,15 +22,14 @@ python3 -c "import torch; print(f'PyTorch {torch.__version__}')"
 wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2404/x86_64/cuda-keyring_1.1-1_all.deb
 sudo dpkg -i cuda-keyring_1.1-1_all.deb
 sudo apt-get update
-sudo apt-get install cuda-toolkit-13-0
+sudo apt-get install cuda-toolkit-12-8
 
-export CUDA_HOME=/usr/local/cuda-13.0  # Point to CUDA 13.0
-export TORCH_CUDA_ARCH_LIST="10.0+PTX"  # Blackwell compute capability
+export CUDA_HOME=/usr/local/cuda-12.8
+export TORCH_CUDA_ARCH_LIST="10.0+PTX"  # Blackwell architecture
 FLASH_ATTENTION_FORCE_BUILD=TRUE MAX_JOBS=8 pip install flash-attn --no-build-isolation
 
-# Verify
 python -c "import flash_attn; print('Flash Attention OK')"
-nvidia-smi  # Should show CUDA 13.0+ driver
+nvidia-smi  # Should show CUDA 12.8
 
 # Create AI Toolkit startup script
 cat > /opt/supervisor-scripts/ai-toolkit.sh << 'EOL'
