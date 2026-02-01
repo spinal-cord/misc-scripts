@@ -10,7 +10,7 @@ cd ai-toolkit
 git checkout feature/sageattention-wan-support
 
 
-uv pip install --no-cache-dir torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu128
+uv pip install --no-cache-dir torch==2.7.0 torchvision==0.22.0 torchaudio==2.7.0 --index-url https://download.pytorch.org/whl/cu126
 
 #uv pip install torch==${TORCH_VERSION:-2.7.0} torchvision torchaudio --torch-backend="${TORCH_BACKEND:-cu128}"
 #uv pip install timm==1.0.22
@@ -27,6 +27,9 @@ sudo apt-get install cuda-toolkit-12-8
 export CUDA_HOME=/usr/local/cuda-12.8
 export TORCH_CUDA_ARCH_LIST="10.0+PTX"  # Blackwell architecture
 FLASH_ATTENTION_FORCE_BUILD=TRUE MAX_JOBS=8 uv pip install flash-attn --no-build-isolation
+
+sudo apt-get install cuda-toolkit-12-6
+export CUDA_HOME=/usr/local/cuda-12.6
 
 python -c "import flash_attn; print('Flash Attention OK')"
 nvidia-smi  # Should show CUDA 12.8
