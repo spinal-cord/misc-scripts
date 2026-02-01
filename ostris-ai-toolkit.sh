@@ -7,7 +7,7 @@ set -euo pipefail
 cd "$WORKSPACE"
 [[ -d "${WORKSPACE}/ai-toolkit" ]] || git clone https://github.com/relaxis/ai-toolkit.git
 cd ai-toolkit
-git checkout sageattention-wan-support
+git checkout feature/sageattention-wan-support
 
 
 uv pip install --no-cache-dir torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu128
