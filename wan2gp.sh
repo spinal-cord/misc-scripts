@@ -2,6 +2,23 @@
 
 set -euo pipefail
 
+echo "Downloading CUDA 12.8 runfile installer..."
+wget https://developer.download.nvidia.com/compute/cuda/12.8.0/local_installers/cuda_12.8.0_570.86.10_linux.run
+
+echo "Installing CUDA Toolkit (this may take a few minutes)..."
+sudo sh cuda_12.8.0_570.86.10_linux.run --silent --toolkit --override
+
+echo "Setting up environment variables..."
+echo 'export PATH=/usr/local/cuda-12.8/bin:$PATH' >> ~/.bashrc
+echo 'export LD_LIBRARY_PATH=/usr/local/cuda-12.8/lib64:$LD_LIBRARY_PATH' >> ~/.bashrc
+
+# Apply changes to current shell
+export PATH=/usr/local/cuda-12.8/bin:$PATH
+export LD_LIBRARY_PATH=/usr/local/cuda-12.8/lib64:$LD_LIBRARY_PATH
+sudo ldconfig
+
+echo "CUDA 12.8 installation complete."
+
 . /venv/main/bin/activate
 
 apt-get install -y \
