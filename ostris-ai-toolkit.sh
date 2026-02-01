@@ -9,7 +9,7 @@ cd "$WORKSPACE"
 cd ai-toolkit
 git checkout i2v-main
 
-uv pip install --pre torch==2.10.0 torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/cu130
+uv pip install torch==2.10.0 torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/cu130
 # uv pip install torch torchvision torchaudio --torch-backend="${TORCH_BACKEND:-cu130}"
 # uv pip install timm==1.0.22
 uv pip install -r requirements.txt
