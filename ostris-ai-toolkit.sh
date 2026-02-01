@@ -15,7 +15,7 @@ uv pip install timm==1.0.22
 uv pip install -r requirements.txt
 
 python3 -c "import torch; print(f'PyTorch {torch.__version__}')"
-python3 -c "import sageattention; print('SageAttention installed')"
+# python3 -c "import sageattention; print('SageAttention installed')"
 
 wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2404/x86_64/cuda-keyring_1.1-1_all.deb
 sudo dpkg -i cuda-keyring_1.1-1_all.deb
