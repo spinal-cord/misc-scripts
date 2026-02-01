@@ -9,14 +9,16 @@ cd "$WORKSPACE"
 cd ai-toolkit
 git checkout i2v-main
 
-uv pip install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/cu130
+uv pip install --pre torch==2.10.0 torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/cu130
 # uv pip install torch torchvision torchaudio --torch-backend="${TORCH_BACKEND:-cu130}"
 # uv pip install timm==1.0.22
 uv pip install -r requirements.txt
 
-export CUDA_HOME=/usr/local/cuda-13.0  # Point to CUDA 13.0
-export TORCH_CUDA_ARCH_LIST="10.0+PTX"  # Blackwell compute capability
-FLASH_ATTENTION_FORCE_BUILD=TRUE MAX_JOBS=8 uv pip install flash-attn --no-build-isolation
+uv pip install https://github.com/mjun0812/flash-attention-prebuild-wheels/releases/download/v0.7.16/flash_attn-2.6.3+cu130torch2.9-cp312-cp312-linux_x86_64.whl
+
+# export CUDA_HOME=/usr/local/cuda-13.0  # Point to CUDA 13.0
+# export TORCH_CUDA_ARCH_LIST="10.0+PTX"  # Blackwell compute capability
+# FLASH_ATTENTION_FORCE_BUILD=TRUE MAX_JOBS=8 uv pip install flash-attn --no-build-isolation
 
 
 # Create AI Toolkit startup script
