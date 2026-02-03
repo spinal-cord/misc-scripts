@@ -97,5 +97,6 @@ chmod +x /usr/local/bin/restart
 
 cd /workspace/Wan2GP/
 git clone https://github.com/spinal-cord/SageAttention.git
-cd SageAttention
+cd /workspace/Wan2GP/SageAttention
 python setup.py install
+restart
