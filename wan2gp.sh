@@ -96,7 +96,17 @@ EOL
 chmod +x /usr/local/bin/restart
 
 cd /workspace/Wan2GP/
-git clone https://github.com/spinal-cord/SageAttention.git
-cd /workspace/Wan2GP/SageAttention
-python setup.py install
+#git clone https://github.com/spinal-cord/SageAttention.git
+#cd /workspace/Wan2GP/SageAttention
+#python setup.py install
+
+wget https://github.com/spinal-cord/SageAttention/releases/download/v2.2.0/sageattention-2.2.0-1.cuda12.8.torch2.7.1-cp312-cp312-manylinux_2_17_x86_64.whl
+
+SAGE2_FILE="sageattention-2.2.0-1.cuda12.8.torch2.7.1-cp312-cp312-manylinux_2_17_x86_64.whl"
+CHECKSUM_FILE="${SAGE2_FILE}.checksum.sha256"
+
+echo 'b231d66b153b0fa0e7cd8648771b9fb85309de990418acc7766ec8deeaaa2553  sageattention-2.2.0-1.cuda12.8.torch2.7.1-cp312-cp312-manylinux_2_17_x86_64.whl' > "$CHECKSUM_FILE"
+
+sha256-verify "$SAGE2_FILE" "$CHECKSUM_FILE" && uv pip install "$SAGE2_FILE" || exit 1
+
 restart
