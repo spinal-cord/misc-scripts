@@ -28,7 +28,7 @@ if (( cuda_version_int < threshold_version_int )); then
     torch_backend=cu130
 fi
 
-uv pip install torch==${TORCH_VERSION:-2.9.1} torchvision torchaudio --torch-backend="${TORCH_BACKEND:-$torch_backend}"
+uv pip install torch==${TORCH_VERSION:-2.10.0} torchvision torchaudio --torch-backend="${TORCH_BACKEND:-$torch_backend}"
 uv pip install -r requirements.txt
 
 # Create Wan2GP startup scripts
@@ -55,7 +55,6 @@ python wgp.py 2>&1
 EOL
 
 chmod +x /opt/supervisor-scripts/wan2gp.sh
-
 
 
 # Generate the supervisor config files
@@ -102,3 +101,4 @@ cd /workspace/Wan2GP/
 git clone https://github.com/spinal-cord/SageAttention.git
 cd SageAttention
 python setup.py install
+restart
