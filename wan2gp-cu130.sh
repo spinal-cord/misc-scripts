@@ -98,7 +98,17 @@ chmod +x /usr/local/bin/restart
 uv pip install torchcodec
 
 cd /workspace/Wan2GP/
-git clone https://github.com/spinal-cord/SageAttention.git
-cd SageAttention
-python setup.py install
+#git clone https://github.com/spinal-cord/SageAttention.git
+#cd SageAttention
+#python setup.py install
+
+wget https://github.com/spinal-cord/SageAttention/releases/download/v2.2.0/sageattention-2.2.0-cuda13.0.torch2.10.0-cp312-cp312-manylinux_2_17_x86_64_CC12.0.whl
+
+SAGE2_FILE="sageattention-2.2.0-cuda13.0.torch2.10.0-cp312-cp312-manylinux_2_17_x86_64_CC12.0.whl"
+CHECKSUM_FILE="${SAGE2_FILE}.checksum.sha256"
+
+echo '507b8117f749083a7af0903a99b5742e675ac93933fdc48e14855bcf52915fa1 sageattention-2.2.0-cuda13.0.torch2.10.0-cp312-cp312-manylinux_2_17_x86_64_CC12.0.whl' > "$CHECKSUM_FILE"
+
+sha256-verify "$SAGE2_FILE" "$CHECKSUM_FILE" && uv pip install "$SAGE2_FILE" || echo 'checksum verification FAILED'
+
 restart
