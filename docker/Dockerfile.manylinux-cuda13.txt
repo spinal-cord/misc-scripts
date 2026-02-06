@@ -1,0 +1,62 @@
+FROM quay.io/pypa/manylinux_2_17_x86_64:latest
+
+# Install necessary build tools
+RUN yum install -y wget curl git cmake make gcc gcc-c++ kernel-devel \
+    && yum clean all
+
+# Install CUDA 13.0
+RUN wget https://developer.download.nvidia.com/compute/cuda/13.0.0/local_installers/cuda-repo-rhel7-13-0-local-13.0.0_525.60.13-1.x86_64.rpm
+RUN rpm -i cuda-repo-rhel7-13-0-local-13.0.0_525.60.13-1.x86_64.rpm
+RUN yum clean all
+RUN yum install -y cuda-toolkit-13-0 cuda-cudart-devel-13-0 cuda-cudart-static-13-0 \
+                   cuda-driver-devel-13-0 cuda-nvcc-13-0 cuda-nvrtc-13-0 \
+                   cuda-nvrtc-devel-13-0 cuda-nvml-devel-13-0 \
+    && yum clean all
+
+# Set CUDA environment variables
+ENV CUDA_HOME=/usr/local/cuda-13.0
+ENV PATH=${CUDA_HOME}/bin:${PATH}
+ENV LD_LIBRARY_PATH=${CUDA_HOME}/lib64:${LD_LIBRARY_PATH}
+
+# Verify CUDA installation
+RUN nvcc --version
+
+# Install Python 3.12 development packages
+RUN yum install -y python3-devel openssl-devel libffi-devel bzip2-devel \
+                   libarchive-devel xz-devel zlib-devel \
+    && yum clean all
+
+# Create Python 3.12 symlink (manylinux already has Python 3.12)
+RUN ln -sf /opt/python/cp312-cp312/bin/python3.12 /usr/local/bin/python3.12
+RUN ln -sf /opt/python/cp312-cp312/bin/pip3.12 /usr/local/bin/pip3.12
+
+# Upgrade pip and install build dependencies
+RUN /opt/python/cp312-cp312/bin/python -m pip install --upgrade pip setuptools wheel
+
+# Install PyTorch 2.10.0 with CUDA 13.0
+RUN /opt/python/cp312-cp312/bin/pip install \
+    torch==2.10.0+cu130 \
+    torchvision==0.25.0+cu130 \
+    torchaudio==2.10.0+cu130 \
+    --index-url https://download.pytorch.org/whl/cu130
+
+# Install additional build dependencies
+RUN /opt/python/cp312-cp312/bin/pip install \
+    ninja \
+    packaging \
+    auditwheel
+
+# Set environment variables for PyTorch CUDA
+ENV TORCH_CUDA_ARCH_LIST="12.0"
+ENV FORCE_CUDA=1
+ENV CUDA_HOME=/usr/local/cuda-13.0
+
+# Create working directory
+WORKDIR /app
+
+# Copy build script
+COPY build_wheel.sh /app/build_wheel.sh
+RUN chmod +x /app/build_wheel.sh
+
+# Default command
+CMD ["/app/build_wheel.sh"]
