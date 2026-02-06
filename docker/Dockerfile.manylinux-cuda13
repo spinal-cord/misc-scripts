@@ -4,14 +4,11 @@ FROM quay.io/pypa/manylinux2014_x86_64:latest
 RUN yum install -y wget curl git cmake make gcc gcc-c++ kernel-devel \
     && yum clean all
 
-# Install CUDA 13.0
-RUN wget https://developer.download.nvidia.com/compute/cuda/13.0.0/local_installers/cuda-repo-rhel7-13-0-local-13.0.0_525.60.13-1.x86_64.rpm
-RUN rpm -i cuda-repo-rhel7-13-0-local-13.0.0_525.60.13-1.x86_64.rpm
+# Install CUDA 13.0 (Updated Method)
+RUN yum install -y yum-utils
+RUN yum-config-manager --add-repo https://developer.download.nvidia.com/compute/cuda/repos/rhel7/x86_64/cuda-rhel7.repo
 RUN yum clean all
-RUN yum install -y cuda-toolkit-13-0 cuda-cudart-devel-13-0 cuda-cudart-static-13-0 \
-                   cuda-driver-devel-13-0 cuda-nvcc-13-0 cuda-nvrtc-13-0 \
-                   cuda-nvrtc-devel-13-0 cuda-nvml-devel-13-0 \
-    && yum clean all
+RUN yum install -y cuda-toolkit-13-0
 
 # Set CUDA environment variables
 ENV CUDA_HOME=/usr/local/cuda-13.0
