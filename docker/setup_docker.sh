@@ -55,3 +55,5 @@ docker run hello-world
 echo "=== IMPORTANT ==="
 echo "Please log out and log back in for group changes to take effect."
 echo "Then run the build script."
+
+sudo service docker start

@@ -117,26 +117,25 @@ build_sage_attention_docker () {
     cd /workspace/Wan2GP/
     git clone https://github.com/spinal-cord/SageAttention.git
     cd SageAttention
-    
+
     SCRIPT_DL_NAME='setup_docker.sh'
     curl -o "$SCRIPT_DL_NAME" https://raw.githubusercontent.com/spinal-cord/misc-scripts/refs/heads/main/docker/setup_docker.sh
     chmod +x "$SCRIPT_DL_NAME"
-    mv "$SCRIPT_DL_NAME" /usr/local/bin/"$SCRIPT_DL_NAME"
 
     SCRIPT_DL_NAME='Dockerfile.manylinux-cuda13'
     curl -o "$SCRIPT_DL_NAME" https://raw.githubusercontent.com/spinal-cord/misc-scripts/refs/heads/main/docker/setup_docker.sh
     chmod +x "$SCRIPT_DL_NAME"
-    mv "$SCRIPT_DL_NAME" /usr/local/bin/"$SCRIPT_DL_NAME"
 
     SCRIPT_DL_NAME='build_manylinux_wheel.sh'
     curl -o "$SCRIPT_DL_NAME" https://raw.githubusercontent.com/spinal-cord/misc-scripts/refs/heads/main/docker/setup_docker.sh
     chmod +x "$SCRIPT_DL_NAME"
-    mv "$SCRIPT_DL_NAME" /usr/local/bin/"$SCRIPT_DL_NAME"
 
     SCRIPT_DL_NAME='build_wheel.sh'
     curl -o "$SCRIPT_DL_NAME" https://raw.githubusercontent.com/spinal-cord/misc-scripts/refs/heads/main/docker/setup_docker.sh
     chmod +x "$SCRIPT_DL_NAME"
-    mv "$SCRIPT_DL_NAME" /usr/local/bin/"$SCRIPT_DL_NAME"
+
+    ./setup_docker.sh
+    ./build_manylinux_wheel.sh
 }
 
 cd /workspace/Wan2GP/
