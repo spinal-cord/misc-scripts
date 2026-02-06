@@ -1,4 +1,4 @@
-FROM quay.io/pypa/manylinux_2_17_x86_64:latest
+FROM quay.io/pypa/manylinux2014_x86_64:latest
 
 # Install necessary build tools
 RUN yum install -y wget curl git cmake make gcc gcc-c++ kernel-devel \
