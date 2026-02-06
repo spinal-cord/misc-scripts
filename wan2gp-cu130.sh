@@ -87,6 +87,10 @@ curl -o big-files-print https://raw.githubusercontent.com/spinal-cord/misc-scrip
 chmod +x big-files-print
 mv big-files-print /usr/local/bin/big-files-print
 
+curl -o sha256-verify https://raw.githubusercontent.com/spinal-cord/misc-scripts/refs/heads/main/sha256-verify
+chmod +x sha256-verify
+mv sha256-verify /usr/local/bin/sha256-verify
+
 # Create Wan2GP restart scripts
 cat > /usr/local/bin/restart << 'EOL'
 #!/bin/bash
