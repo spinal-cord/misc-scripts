@@ -141,12 +141,12 @@ build_sage_attention_docker () {
 
 cd /workspace/Wan2GP/
 
-wget https://github.com/spinal-cord/SageAttention/releases/download/v2.2.0/sageattention-2.2.0-1.cuda13.0.torch2.10.0-cp312-cp312-manylinux_2_17_x86_64_CC12.0.whl
+wget https://github.com/spinal-cord/SageAttention/releases/download/v2.2.0/sageattention-2.2.0-1.cuda13.0.torch2.10.0-cp312-cp312-linux_x86_64.whl
 
-SAGE2_FILE="sageattention-2.2.0-1.cuda13.0.torch2.10.0-cp312-cp312-manylinux_2_17_x86_64_CC12.0.whl"
+SAGE2_FILE="sageattention-2.2.0-1.cuda13.0.torch2.10.0-cp312-cp312-linux_x86_64.whl"
 CHECKSUM_FILE="${SAGE2_FILE}.checksum.sha256"
 
-echo 'cb654f3aac0df90ebf5191ec0dabb95f729c13eeba7652d25069f7d603eedbc6  sageattention-2.2.0-1.cuda13.0.torch2.10.0-cp312-cp312-manylinux_2_17_x86_64_CC12.0.whl' > "$CHECKSUM_FILE"
+echo 'cb654f3aac0df90ebf5191ec0dabb95f729c13eeba7652d25069f7d603eedbc6  sageattention-2.2.0-1.cuda13.0.torch2.10.0-cp312-cp312-linux_x86_64.whl' > "$CHECKSUM_FILE"
 
 sha256-verify "$SAGE2_FILE" "$CHECKSUM_FILE" && ( uv pip install "$SAGE2_FILE" && echo 'installed sage2 from wheel' || build_sage_attention ) || echo 'checksum verification FAILED'
 
