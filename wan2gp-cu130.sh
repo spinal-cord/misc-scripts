@@ -103,6 +103,7 @@ chmod +x /usr/local/bin/restart
 uv pip install torchcodec
 
 build_sage_attention () {
+    echo 'building sage2'
     cd /workspace/Wan2GP/
     git clone https://github.com/spinal-cord/SageAttention.git
     cd SageAttention
@@ -119,19 +120,19 @@ build_sage_attention_docker () {
     cd SageAttention
 
     SCRIPT_DL_NAME='setup_docker.sh'
-    curl -o "$SCRIPT_DL_NAME" https://raw.githubusercontent.com/spinal-cord/misc-scripts/refs/heads/main/docker/$SCRIPT_DL_NAME.sh
+    curl -o "$SCRIPT_DL_NAME" https://raw.githubusercontent.com/spinal-cord/misc-scripts/refs/heads/main/docker/$SCRIPT_DL_NAME
     chmod +x "$SCRIPT_DL_NAME"
 
     SCRIPT_DL_NAME='Dockerfile.manylinux-cuda13'
-    curl -o "$SCRIPT_DL_NAME" https://raw.githubusercontent.com/spinal-cord/misc-scripts/refs/heads/main/docker/$SCRIPT_DL_NAME.sh
+    curl -o "$SCRIPT_DL_NAME" https://raw.githubusercontent.com/spinal-cord/misc-scripts/refs/heads/main/docker/$SCRIPT_DL_NAME
     chmod +x "$SCRIPT_DL_NAME"
 
     SCRIPT_DL_NAME='build_manylinux_wheel.sh'
-    curl -o "$SCRIPT_DL_NAME" https://raw.githubusercontent.com/spinal-cord/misc-scripts/refs/heads/main/docker/$SCRIPT_DL_NAME.sh
+    curl -o "$SCRIPT_DL_NAME" https://raw.githubusercontent.com/spinal-cord/misc-scripts/refs/heads/main/docker/$SCRIPT_DL_NAME
     chmod +x "$SCRIPT_DL_NAME"
 
     SCRIPT_DL_NAME='build_wheel.sh'
-    curl -o "$SCRIPT_DL_NAME" https://raw.githubusercontent.com/spinal-cord/misc-scripts/refs/heads/main/docker/$SCRIPT_DL_NAME.sh
+    curl -o "$SCRIPT_DL_NAME" https://raw.githubusercontent.com/spinal-cord/misc-scripts/refs/heads/main/docker/$SCRIPT_DL_NAME
     chmod +x "$SCRIPT_DL_NAME"
 
     ./setup_docker.sh
@@ -147,8 +148,6 @@ CHECKSUM_FILE="${SAGE2_FILE}.checksum.sha256"
 
 echo 'cb654f3aac0df90ebf5191ec0dabb95f729c13eeba7652d25069f7d603eedbc6  sageattention-2.2.0-1.cuda13.0.torch2.10.0-cp312-cp312-manylinux_2_17_x86_64_CC12.0.whl' > "$CHECKSUM_FILE"
 
-sha256-verify "$SAGE2_FILE" "$CHECKSUM_FILE" && ( uv pip install "$SAGE2_FILE" && echo 'success' || build_sage_attention ) || echo 'checksum verification FAILED'
-
-uv pip install "$SAGE2_FILE" 
+sha256-verify "$SAGE2_FILE" "$CHECKSUM_FILE" && ( uv pip install "$SAGE2_FILE" && echo 'installed sage2 from wheel' || build_sage_attention ) || echo 'checksum verification FAILED'
 
 restart
