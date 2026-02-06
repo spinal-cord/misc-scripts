@@ -4,7 +4,7 @@
 set -e
 
 echo "=== Pulling manylinux image ==="
-docker pull quay.io/pypa/manylinux_2_17_x86_64:latest
+docker pull quay.io/pypa/manylinux2014_x86_64:latest
 
 echo "=== Building Docker image with CUDA 13.0 ==="
 docker build -t manylinux-cuda13 -f Dockerfile.manylinux-cuda13 .

@@ -119,19 +119,19 @@ build_sage_attention_docker () {
     cd SageAttention
 
     SCRIPT_DL_NAME='setup_docker.sh'
-    curl -o "$SCRIPT_DL_NAME" https://raw.githubusercontent.com/spinal-cord/misc-scripts/refs/heads/main/docker/setup_docker.sh
+    curl -o "$SCRIPT_DL_NAME" https://raw.githubusercontent.com/spinal-cord/misc-scripts/refs/heads/main/docker/$SCRIPT_DL_NAME.sh
     chmod +x "$SCRIPT_DL_NAME"
 
     SCRIPT_DL_NAME='Dockerfile.manylinux-cuda13'
-    curl -o "$SCRIPT_DL_NAME" https://raw.githubusercontent.com/spinal-cord/misc-scripts/refs/heads/main/docker/setup_docker.sh
+    curl -o "$SCRIPT_DL_NAME" https://raw.githubusercontent.com/spinal-cord/misc-scripts/refs/heads/main/docker/$SCRIPT_DL_NAME.sh
     chmod +x "$SCRIPT_DL_NAME"
 
     SCRIPT_DL_NAME='build_manylinux_wheel.sh'
-    curl -o "$SCRIPT_DL_NAME" https://raw.githubusercontent.com/spinal-cord/misc-scripts/refs/heads/main/docker/setup_docker.sh
+    curl -o "$SCRIPT_DL_NAME" https://raw.githubusercontent.com/spinal-cord/misc-scripts/refs/heads/main/docker/$SCRIPT_DL_NAME.sh
     chmod +x "$SCRIPT_DL_NAME"
 
     SCRIPT_DL_NAME='build_wheel.sh'
-    curl -o "$SCRIPT_DL_NAME" https://raw.githubusercontent.com/spinal-cord/misc-scripts/refs/heads/main/docker/setup_docker.sh
+    curl -o "$SCRIPT_DL_NAME" https://raw.githubusercontent.com/spinal-cord/misc-scripts/refs/heads/main/docker/$SCRIPT_DL_NAME.sh
     chmod +x "$SCRIPT_DL_NAME"
 
     ./setup_docker.sh
