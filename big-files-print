@@ -1,5 +1,7 @@
 #!/bin/bash
 
+clear
+
 # Script to display the top N largest files and directories in the root filesystem,
 # with hardcoded exclusions for common large or irrelevant directories and patterns.
 # Hardcoded exclusions:
