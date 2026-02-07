@@ -7,7 +7,7 @@ set -euo pipefail
 cd "$WORKSPACE"
 [[ -d "${WORKSPACE}/ai-toolkit" ]] || git clone https://github.com/spinal-cord/ai-toolkit.git
 cd ai-toolkit
-git checkout i2v-main
+git checkout main
 
 
 uv pip install torch==2.10.0 torchvision torchaudio --index-url https://download.pytorch.org/whl/cu130
