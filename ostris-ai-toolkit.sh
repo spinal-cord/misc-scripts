@@ -105,3 +105,5 @@ supervisorctl update
 curl -o big-files-print https://raw.githubusercontent.com/spinal-cord/misc-scripts/refs/heads/main/big-files-print
 chmod +x big-files-print
 mv big-files-print /usr/local/bin/big-files-print
+
+cp pipeline_wan.py /venv/main/lib/python3.12/site-packages/diffusers/pipelines/wan/pipeline_wan.py
