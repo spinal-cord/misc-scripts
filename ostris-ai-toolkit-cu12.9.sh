@@ -108,3 +108,28 @@ chmod +x big-files-print
 mv big-files-print /usr/local/bin/big-files-print
 
 # cp pipeline_wan.py /venv/main/lib/python3.12/site-packages/diffusers/pipelines/wan/pipeline_wan.py
+
+build_sage_attention () {
+    echo 'building sage2'
+    cd /workspace/ai-toolkit/
+    git clone https://github.com/spinal-cord/SageAttention.git
+    cd SageAttention
+    uv pip install wheel build
+    export TORCH_CUDA_ARCH_LIST="12.0"
+    python setup.py bdist_wheel
+
+    #python setup.py install
+}
+
+cd /workspace/ai-toolkit/
+build_sage_attention
+
+
+# wget https://github.com/spinal-cord/SageAttention/releases/download/v2.2.0/sageattention-2.2.0-1.cuda13.0.torch2.10.0-cp312-cp312-linux_x86_64.whl
+
+# SAGE2_FILE="sageattention-2.2.0-1.cuda13.0.torch2.10.0-cp312-cp312-linux_x86_64.whl"
+# CHECKSUM_FILE="${SAGE2_FILE}.checksum.sha256"
+
+# echo 'cb654f3aac0df90ebf5191ec0dabb95f729c13eeba7652d25069f7d603eedbc6  sageattention-2.2.0-1.cuda13.0.torch2.10.0-cp312-cp312-linux_x86_64.whl' > "$CHECKSUM_FILE"
+
+# sha256-verify "$SAGE2_FILE" "$CHECKSUM_FILE" && ( uv pip install "$SAGE2_FILE" && echo 'installed sage2 from wheel' || build_sage_attention ) || echo 'checksum verification FAILED'
