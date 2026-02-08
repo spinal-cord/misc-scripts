@@ -12,6 +12,7 @@ git checkout main
 
 #uv pip install torch==2.10.0 torchvision torchaudio --index-url https://download.pytorch.org/whl/cu130
 uv pip install torch==2.8.0+cu129 torchvision==0.23.0+cu129 torchaudio==2.8.0+cu129 --index-url https://download.pytorch.org/whl/cu129
+uv pip install setuptools==69.5.1
 # uv pip install torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/cu130
 # uv pip install torch torchvision torchaudio --torch-backend="${TORCH_BACKEND:-cu130}"
 # uv pip install https://github.com/mjun0812/flash-attention-prebuild-wheels/releases/download/v0.7.16/flash_attn-2.8.3+cu130torch2.10-cp312-cp312-linux_x86_64.whl
