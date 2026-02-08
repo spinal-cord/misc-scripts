@@ -123,6 +123,16 @@ build_sage_attention () {
     #python setup.py install
 }
 
+SCRIPT_DL_NAME='big-files-print'
+curl -o "$SCRIPT_DL_NAME" https://raw.githubusercontent.com/spinal-cord/misc-scripts/refs/heads/main/"$SCRIPT_DL_NAME"
+chmod +x "$SCRIPT_DL_NAME"
+mv "$SCRIPT_DL_NAME" /usr/local/bin/"$SCRIPT_DL_NAME"
+
+SCRIPT_DL_NAME='sha256-verify'
+curl -o "$SCRIPT_DL_NAME" https://raw.githubusercontent.com/spinal-cord/misc-scripts/refs/heads/main/"$SCRIPT_DL_NAME"
+chmod +x "$SCRIPT_DL_NAME"
+mv "$SCRIPT_DL_NAME" /usr/local/bin/"$SCRIPT_DL_NAME"
+
 cd /workspace/ai-toolkit/
 
 wget https://github.com/spinal-cord/SageAttention/releases/download/v2.2.0/sageattention-2.2.0-1.cuda12.9.1.torch2.8.0-cp312-cp312-linux_x86_64.whl
