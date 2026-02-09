@@ -92,6 +92,11 @@ curl -o "$SCRIPT_DL_NAME" https://raw.githubusercontent.com/spinal-cord/misc-scr
 chmod +x "$SCRIPT_DL_NAME"
 mv "$SCRIPT_DL_NAME" /usr/local/bin/"$SCRIPT_DL_NAME"
 
+SCRIPT_DL_NAME='wanclear'
+curl -o "$SCRIPT_DL_NAME" https://raw.githubusercontent.com/spinal-cord/misc-scripts/refs/heads/main/"$SCRIPT_DL_NAME"
+chmod +x "$SCRIPT_DL_NAME"
+mv "$SCRIPT_DL_NAME" /usr/local/bin/"$SCRIPT_DL_NAME"
+
 # Create Wan2GP restart scripts
 cat > /usr/local/bin/restart << 'EOL'
 #!/bin/bash
