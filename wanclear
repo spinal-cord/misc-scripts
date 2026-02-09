@@ -1,0 +1,8 @@
+#!/bin/bash
+
+cd /workspace/Wan2GP/outputs/
+
+for video in *.mp4
+do
+	echo 't2' > "${video}"
+done
