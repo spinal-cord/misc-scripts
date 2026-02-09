@@ -6,3 +6,5 @@ for video in *.mp4
 do
 	echo 't2' > "${video}"
 done
+
+clear
