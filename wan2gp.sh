@@ -11,7 +11,7 @@ apt-get install -y \
 cd "$WORKSPACE"
 [[ -d "${WORKSPACE}/Wan2GP" ]] || git clone https://github.com/spinal-cord/Wan2GP
 cd Wan2GP
-[[ -n "{WAN2GP_VERSION:-}" ]] && git checkout "$WAN2GP_VERSION"
+[[ -n "{WAN2GP_VERSION:-}" ]] && git checkout main
 
 # Find the most appropriate backend given W2GP's torch version restrictions
 if [[ -z "${CUDA_VERSION:-}" ]]; then
