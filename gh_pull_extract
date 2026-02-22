@@ -1,0 +1,138 @@
+#!/bin/bash
+
+# Check if input file is provided
+if [ -z "$1" ]; then
+    echo "Usage: $0 github_pull_request_html_source.html"
+    exit 1
+fi
+
+INPUT_FILE="$1"
+
+# Check if input file exists
+if [ ! -f "$INPUT_FILE" ]; then
+    echo "Error: File '$INPUT_FILE' not found"
+    exit 1
+fi
+
+# Use Python for extraction (most reliable for GitHub HTML)
+if command -v python3 &> /dev/null; then
+    python3 - "$INPUT_FILE" << 'PYTHON_SCRIPT'
+#!/usr/bin/env python3
+import sys
+import re
+import html
+import json
+import os
+
+if len(sys.argv) < 2:
+    print("Usage: python3 gh_pull_extract.py <html_file>")
+    sys.exit(1)
+
+input_file = sys.argv[1]
+
+with open(input_file, 'r', encoding='utf-8', errors='ignore') as f:
+    html_content = f.read()
+
+output_lines = []
+title = ""
+
+# Extract title from <title> tag
+title_match = re.search(r'<title>([^<]+)</title>', html_content)
+if title_match:
+    title = html.unescape(title_match.group(1))
+    output_lines.append("=" * 60)
+    output_lines.append("TITLE: " + title)
+    output_lines.append("=" * 60)
+    output_lines.append("")
+
+# Try JSON-LD first
+ld_json_match = re.search(r'<script type="application/ld\+json">(.*?)</script>', html_content, re.DOTALL)
+if ld_json_match:
+    try:
+        data = json.loads(ld_json_match.group(1))
+        if 'headline' in data:
+            title = html.unescape(data['headline'])
+        if 'articleBody' in data:
+            body = data['articleBody']
+            body = body.replace('\\n', '\n').replace('\\t', '\t')
+            body = body.replace('<', '<').replace('>', '>').replace('&amp;', '&')
+            body = body.replace('"', '"').replace('&#39;', "'")
+            output_lines.append(html.unescape(body))
+    except:
+        pass
+
+# Generate filename from title
+if title:
+    filename_title = re.sub(r'[^a-zA-Z0-9_]', '_', title)
+    filename_title = re.sub(r'_+', '_', filename_title).strip('_')
+    output_file = filename_title + ".txt"
+else:
+    output_file = os.path.splitext(input_file)[0] + ".txt"
+
+with open(output_file, 'w', encoding='utf-8') as f:
+    f.write('\n'.join(output_lines))
+
+print(f"Extracted to {output_file}")
+
+PYTHON_SCRIPT
+    RESULT=$?
+    
+    if [ $RESULT -eq 0 ]; then
+        exit 0
+    fi
+fi
+
+# Method 2: Try using lynx if available
+OUTPUT_FILE="${INPUT_FILE%.html}.txt"
+if command -v lynx &> /dev/null; then
+    lynx -dump -nolist -width=200 "$INPUT_FILE" > "$OUTPUT_FILE"
+    echo "Extracted to $OUTPUT_FILE using lynx"
+    exit 0
+fi
+
+# Method 3: Try using w3m if available
+if command -v w3m &> /dev/null; then
+    w3m -dump -cols 200 "$INPUT_FILE" > "$OUTPUT_FILE"
+    echo "Extracted to $OUTPUT_FILE using w3m"
+    exit 0
+fi
+
+# Method 4: Try using pandoc if available
+if command -v pandoc &> /dev/null; then
+    pandoc -t plain -o "$OUTPUT_FILE" "$INPUT_FILE" 2>/dev/null
+    if [ $? -eq 0 ]; then
+        echo "Extracted to $OUTPUT_FILE using pandoc"
+        exit 0
+    fi
+fi
+
+# Fallback: basic sed extraction
+echo "Using basic extraction method..."
+
+# Extract title
+TITLE=$(sed -n 's/.*<title>\([^<]*\).*/\1/p' "$INPUT_FILE" | head -1)
+
+# Generate output filename from title
+if [ -n "$TITLE" ]; then
+    FILENAME_TITLE=$(echo "$TITLE" | sed 's/[^a-zA-Z0-9_]/_/g' | sed 's/_*/_/g' | sed 's/^_//' | sed 's/_$//')
+    OUTPUT_FILE="${FILENAME_TITLE}.txt"
+else
+    OUTPUT_FILE="${INPUT_FILE%.html}.txt"
+fi
+
+sed -n 's/.*<title>\([^<]*\).*/\1/p' "$INPUT_FILE" > "$OUTPUT_FILE"
+echo "" >> "$OUTPUT_FILE"
+
+# Remove HTML tags and decode entities
+sed -e 's/<[^>]*>//g' \
+    -e 's/</</g' \
+    -e 's/>/>/g' \
+    -e 's/&amp;/\&/g' \
+    -e 's/"/"/g' \
+    -e "s/&#39;/'/g" \
+    -e 's/&nbsp;/ /g' \
+    "$INPUT_FILE" | \
+    grep -v '^[[:space:]]*$' | \
+    head -200 >> "$OUTPUT_FILE"
+
+echo "Extracted to $OUTPUT_FILE (basic method)"

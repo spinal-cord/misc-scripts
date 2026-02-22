@@ -82,10 +82,20 @@ EOL
 supervisorctl reread
 supervisorctl update
 
+SCRIPT_DL_NAME='big-files-print'
+curl -o "$SCRIPT_DL_NAME" https://raw.githubusercontent.com/spinal-cord/misc-scripts/refs/heads/main/"$SCRIPT_DL_NAME"
+chmod +x "$SCRIPT_DL_NAME"
+mv "$SCRIPT_DL_NAME" /usr/local/bin/"$SCRIPT_DL_NAME"
 
-curl -o big-files-print https://raw.githubusercontent.com/spinal-cord/misc-scripts/refs/heads/main/big-files-print
-chmod +x big-files-print
-mv big-files-print /usr/local/bin/big-files-print
+SCRIPT_DL_NAME='sha256-verify'
+curl -o "$SCRIPT_DL_NAME" https://raw.githubusercontent.com/spinal-cord/misc-scripts/refs/heads/main/"$SCRIPT_DL_NAME"
+chmod +x "$SCRIPT_DL_NAME"
+mv "$SCRIPT_DL_NAME" /usr/local/bin/"$SCRIPT_DL_NAME"
+
+SCRIPT_DL_NAME='wanclear'
+curl -o "$SCRIPT_DL_NAME" https://raw.githubusercontent.com/spinal-cord/misc-scripts/refs/heads/main/"$SCRIPT_DL_NAME"
+chmod +x "$SCRIPT_DL_NAME"
+mv "$SCRIPT_DL_NAME" /usr/local/bin/"$SCRIPT_DL_NAME"
 
 # Create Wan2GP restart scripts
 cat > /usr/local/bin/restart << 'EOL'
