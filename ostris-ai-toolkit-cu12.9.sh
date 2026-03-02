@@ -135,11 +135,11 @@ mv "$SCRIPT_DL_NAME" /usr/local/bin/"$SCRIPT_DL_NAME"
 
 cd /workspace/ai-toolkit/
 
-wget https://github.com/spinal-cord/SageAttention/releases/download/v2.2.0/sageattention-2.2.0-1.cuda12.9.1.torch2.8.0-cp312-cp312-linux_x86_64.whl
+# wget https://github.com/spinal-cord/SageAttention/releases/download/v2.2.0/sageattention-2.2.0-1.cuda12.9.1.torch2.8.0-cp312-cp312-linux_x86_64.whl
 
-SAGE2_FILE="sageattention-2.2.0-1.cuda12.9.1.torch2.8.0-cp312-cp312-linux_x86_64.whl"
-CHECKSUM_FILE="${SAGE2_FILE}.checksum.sha256"
+# SAGE2_FILE="sageattention-2.2.0-1.cuda12.9.1.torch2.8.0-cp312-cp312-linux_x86_64.whl"
+# CHECKSUM_FILE="${SAGE2_FILE}.checksum.sha256"
 
-echo 'f823084209725f345c455bfebd9f909288dee307b8bbbbef80ce7a0be5e7c062  sageattention-2.2.0-1.cuda12.9.1.torch2.8.0-cp312-cp312-linux_x86_64.whl' > "$CHECKSUM_FILE"
+# echo 'f823084209725f345c455bfebd9f909288dee307b8bbbbef80ce7a0be5e7c062  sageattention-2.2.0-1.cuda12.9.1.torch2.8.0-cp312-cp312-linux_x86_64.whl' > "$CHECKSUM_FILE"
 
-sha256-verify "$SAGE2_FILE" "$CHECKSUM_FILE" && ( uv pip install "$SAGE2_FILE" && echo 'installed sage2 from wheel' || build_sage_attention ) || echo 'checksum verification FAILED'
+# sha256-verify "$SAGE2_FILE" "$CHECKSUM_FILE" && ( uv pip install "$SAGE2_FILE" && echo 'installed sage2 from wheel' || build_sage_attention ) || echo 'checksum verification FAILED'
