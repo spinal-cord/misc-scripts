@@ -143,3 +143,6 @@ cd /workspace/ai-toolkit/
 # echo 'f823084209725f345c455bfebd9f909288dee307b8bbbbef80ce7a0be5e7c062  sageattention-2.2.0-1.cuda12.9.1.torch2.8.0-cp312-cp312-linux_x86_64.whl' > "$CHECKSUM_FILE"
 
 # sha256-verify "$SAGE2_FILE" "$CHECKSUM_FILE" && ( uv pip install "$SAGE2_FILE" && echo 'installed sage2 from wheel' || build_sage_attention ) || echo 'checksum verification FAILED'
+
+uv pip install "numpy>=1.22.4,<1.29.0" --force-reinstall
+uv pip install --force-reinstall scipy
