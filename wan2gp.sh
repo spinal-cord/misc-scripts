@@ -197,6 +197,24 @@ EOL
 
 chmod +x /usr/local/bin/restart
 
+# Create uv environment unset script
+cat > /usr/local/bin/uv_unset << 'EOL'
+#!/bin/bash
+# Remove the virtual environment activation from PATH
+export PATH=$(echo $PATH | sed 's|/venv/test2/bin:||g')  # Adjust path if test2 is elsewhere
+
+# Unset the virtual environment variable
+unset VIRTUAL_ENV
+
+# Reset the prompt
+export PS1="\u@\h:\w\$ "
+
+# Re-activate just conda if you want it
+source /venv/main/bin/activate
+EOL
+
+chmod +x /usr/local/bin/uv_unset
+
 cd /workspace/Wan2GP/
 #git clone https://github.com/spinal-cord/SageAttention.git
 #cd /workspace/Wan2GP/SageAttention
