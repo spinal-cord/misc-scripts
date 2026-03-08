@@ -62,15 +62,16 @@ else
     HF_USERNAME=$(hf auth whoami 2>&1 | sed -E 's/\x1b\[[0-9;]*m//g' | awk '/^user:/ {print $2}')
     echo 'SETUP: Downloading HF packages'
     hf download "$HF_USERNAME"/packages_cu129_torch28 --local-dir ./packages_cu129_torch28
+    hf download "$HF_USERNAME"/python_requirements --local-dir ./python_requirements
     elapsed=$(time_diff "$start_time")
     echo "SETUP: $elapsed (HF packages download)"
     HF_USERNAME=""
     echo 'SETUP: Installing HF packages'
-    uv pip install --find-links ./packages_cu129_torch28 --torch-backend=auto -r cu129_torch28_requirements.txt --no-index
+    # RTX PRO 6000 WS
+    uv pip install --find-links ./packages_cu129_torch28 --torch-backend=auto -r python_requirements/ostris_cu129_torch28_requirements.txt --no-index
     elapsed=$(time_diff "$start_time")
     echo "SETUP: $elapsed (HF packages installation)"
 fi
-
 
 #uv pip install torch==2.10.0 torchvision torchaudio --index-url https://download.pytorch.org/whl/cu130
 
@@ -81,8 +82,6 @@ fi
 # uv pip install https://github.com/mjun0812/flash-attention-prebuild-wheels/releases/download/v0.7.16/flash_attn-2.6.3+cu130torch2.9-cp312-cp312-linux_x86_64.whl
 # uv pip install https://github.com/mjun0812/flash-attention-prebuild-wheels/releases/download/v0.7.16/flash_attn-2.6.3+cu130torch2.9-cp312-cp312-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl
 # uv pip install timm==1.0.2
-
-
 
 # export CUDA_HOME=/usr/local/cuda-13.0  # Point to CUDA 13.0
 # export TORCH_CUDA_ARCH_LIST="10.0+PTX"  # Blackwell compute capability
@@ -207,7 +206,8 @@ cd /workspace/ai-toolkit/
 
 if [ -z "$HF_PACKAGES" ]; then
     echo "SETUP: HF_PACKAGES is not set or is empty"
-    uv pip install "numpy>=1.22.4,<1.29.0" --force-reinstall
+    # uv pip install "numpy>=1.24,<1.29.0" --force-reinstall
+    uv pip install "numpy==1.26.4" --force-reinstall
     uv pip install --force-reinstall scipy
 else
     echo 'SETUP: Setup complete'
