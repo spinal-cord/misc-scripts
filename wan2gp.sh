@@ -10,8 +10,8 @@ packages=$(uv pip list 2>/dev/null | awk 'NR>2 {print $1 "==" $2}' | paste -sd '
 
 # Check if we got any output
 if [ -n "$packages" ]; then
-    echo "SETUP: Total number of packages in the UV environment: $total_packages"
-    echo "SETUP: Packages in the UV environment: $packages"
+    echo "SETUP: Total number of packages in the initial UV environment: $total_packages"
+    echo "SETUP: Packages in the initial UV environment: $packages"
 else
     echo "SETUP: No packages found or uv command failed."
 fi
@@ -36,11 +36,6 @@ time_diff() {
 
 start_time=$(date +%s)
 
-apt-get install -y \
-    libasound2-dev \
-    pulseaudio-utils \
-    --no-install-recommends
-
 cd "$WORKSPACE"
 echo 'SETUP: Cloning git repo'
 [[ -d "${WORKSPACE}/Wan2GP" ]] || git clone https://github.com/spinal-cord/Wan2GP
@@ -63,6 +58,10 @@ if (( cuda_version_int < threshold_version_int )); then
     torch_backend=cu126
 fi
 
+apt-get install -y \
+    libasound2-dev \
+    pulseaudio-utils \
+    --no-install-recommends
 
 if [ -z "$HF_PACKAGES" ]; then
     echo "SETUP: HF_PACKAGES is not set or is empty"
@@ -90,7 +89,7 @@ else
     echo 'SETUP: Installing HF packages'
     # RTX 5090
     uv pip install --find-links ./packages_cu128_torch27 --torch-backend=auto -r ./python_requirements/wan2gp_2026-02-22_cu128_torch27-requirements.txt --no-index
-    uv pip install --find-links ./attention_py_wheels --torch-backend=auto flash_attn sageattention sageattn3 xformers --no-index
+    uv pip install --find-links ./attention_py_wheels --find-links ./packages_cu128_torch27 --torch-backend=auto flash_attn xformers sageattention sageattn3 --no-index
 fi
 
 elapsed=$(time_diff "$start_time")
