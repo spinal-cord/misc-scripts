@@ -236,7 +236,7 @@ echo -n "SETUP: nvcc --version; cuda == " && nvcc --version | grep -oP 'release 
 echo -n "SETUP: torch.version == " && python -c "import torch; print(torch.__version__)"
 echo -n "SETUP: numpy.version == " && python -c "import numpy; print(numpy.__version__)"
 echo -n "SETUP: flash-attn.version == " && python -c "import flash_attn; print(flash_attn.__version__)"
-echo -n "SETUP: version('flash-attn-3') == " && python -c "from importlib.metadata import version; print(version('flash-attn-3'))"
+echo -n "SETUP: version('flash-attn-3') == " && python -c "import sys, importlib.metadata; from importlib.metadata import PackageNotFoundError; import sys; exec(\"try:\n    print(importlib.metadata.version('flash-attn-3'))\nexcept PackageNotFoundError:\n    try:\n        import flash_attn_3\n        print(flash_attn_3.__version__)\n    except Exception:\n        print('not found or no version info')\")"
 echo -n "SETUP: pkg_resources.get_distribution('xformers').version == " && python -c "import pkg_resources; print(pkg_resources.get_distribution('xformers').version if pkg_resources.get_distribution('xformers') else 'No package metadata found')" 2>/dev/null || echo "Not found"
 echo -n "SETUP: version('sageattention') == " && python -c "from importlib.metadata import version; print(version('sageattention'))"
 echo -n "SETUP: version('sageattn3') == " && python -c "from importlib.metadata import version; print(version('sageattn3'))"
