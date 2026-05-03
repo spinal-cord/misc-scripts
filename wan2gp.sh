@@ -42,7 +42,7 @@ echo 'SETUP: Cloning git repo'
 cd Wan2GP
 elapsed=$(time_diff "$start_time")
 echo "SETUP: $elapsed (git clone)"
-[[ -n "{WAN2GP_VERSION:-}" ]] && git checkout main
+[[ -n "{WAN2GP_VERSION:-}" ]] && git checkout "$WAN2GP_VERSION"
 
 # Find the most appropriate backend given W2GP's torch version restrictions
 if [[ -z "${CUDA_VERSION:-}" ]]; then
