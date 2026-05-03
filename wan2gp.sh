@@ -256,3 +256,11 @@ echo -n "SETUP: version('sageattn3') == " && python -c "import sys, importlib.me
 # wget https://github.com/mjun0812/flash-attention-prebuild-wheels/releases/download/v0.8.2/flash_attn_3-3.0.0+cu128torch2.7gite2743ab-cp39-abi3-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl
 # FLASH3_FILE="flash_attn_3-3.0.0+cu128torch2.7gite2743ab-cp39-abi3-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl"
 # uv pip install "$FLASH3_FILE"
+
+# Check if current commit comes after other commit in the same branch
+if git rev-list HEAD | grep -q "$(git rev-parse 0c0a0a711c72ecadaa7f74cc062dbf103fbeb672)"; then
+    uv pip install whisper==1.1.10
+    uv pip install markdown==3.10.2
+else
+    echo ""
+fi
