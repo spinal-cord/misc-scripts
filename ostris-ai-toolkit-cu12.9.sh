@@ -45,7 +45,7 @@ echo 'SETUP: Cloning git repo'
 cd ai-toolkit
 elapsed=$(time_diff "$start_time")
 echo "SETUP: $elapsed (git clone)"
-git checkout wan
+git checkout "${GIT_BRANCH_NAME:-wan}"
 
 if [ -z "$HF_PACKAGES" ]; then
     echo "SETUP: HF_PACKAGES is not set or is empty"
