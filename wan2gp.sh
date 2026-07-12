@@ -74,6 +74,9 @@ else
     # ^[[1muser: ^[[0m username123$
     # ^[[1morgs: ^[[0m orgname123$
     HF_USERNAME=$(hf auth whoami 2>&1 | sed -E 's/\x1b\[[0-9;]*m//g' | awk '/^user:/ {print $2}')
+    if [[ -z "${HF_USERNAME}" ]]; then
+        HF_USERNAME=""
+    fi
     echo 'SETUP: Downloading HF packages'
     hf download "$HF_USERNAME"/python_requirements --local-dir ./python_requirements
     hf download "$HF_USERNAME"/packages_cu128_torch27 --local-dir ./packages_cu128_torch27
