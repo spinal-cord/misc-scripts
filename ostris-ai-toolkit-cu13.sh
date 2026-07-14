@@ -49,11 +49,11 @@ git checkout "${GIT_BRANCH_NAME:-wan}"
 
 if [ -z "$HF_PACKAGES" ]; then
     echo "SETUP: HF_PACKAGES is not set or is empty"
-    # uv pip install torch==2.13.0 torchvision==0.23.0 torchaudio==2.8.0 --index-url https://download.pytorch.org/whl/cu129
+    uv pip install torch==2.12.1+cu130 torchvision torchaudio --index-url https://download.pytorch.org/whl/cu130
     # uv pip install setuptools==69.5.1
     # uv pip install https://github.com/mjun0812/flash-attention-prebuild-wheels/releases/download/v0.7.11/flash_attn-2.8.3+cu129torch2.8-cp312-cp312-linux_x86_64.whl
     uv pip install -r requirements.txt
-    uv pip install https://github.com/mjun0812/flash-attention-prebuild-wheels/releases/download/v0.7.11/flash_attn-2.8.3+cu129torch2.8-cp312-cp312-linux_x86_64.whl
+    uv pip install https://github.com/mjun0812/flash-attention-prebuild-wheels/releases/download/v0.9.17/flash_attn-2.8.3+cu130torch2.12-cp312-cp312-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl
 else
     hf auth login --token "$HF_PACKAGES"
     # HF username extraction
