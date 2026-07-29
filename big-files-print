@@ -8,13 +8,13 @@ clear
 #   Directories: /proc, /sys, /dev, /run, /mnt, /media, /tmp, /var/log, /var/cache
 #   Patterns: *.log, *.tmp, /usr*, /venv*, /opt*, /usr*
 # Usage: sudo ./disk_usage_excluder.sh [N]
-#   N: Optional integer for the number of top items to display (default: 35)
+#   N: Optional integer for the number of top items to display (default: 10)
 # Note: Run with sudo for full access.
 # The output mimics LS_COLORS-based coloring: directories green, archives (e.g., .7z) red,
 # AI weights purple, regular files white, etc.
 
 # Default number of files
-num_files=35
+num_files=10
 
 # Parse optional argument
 if [[ $# -gt 0 && $1 =~ ^[0-9]+$ ]]; then
