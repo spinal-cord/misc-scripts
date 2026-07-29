@@ -65,7 +65,8 @@ apt-get install -y \
 
 if [ -z "$HF_PACKAGES" ]; then
     echo "SETUP: HF_PACKAGES is not set or is empty"
-    uv pip install torch==${TORCH_VERSION:-2.7.1} torchvision torchaudio --torch-backend="${TORCH_BACKEND:-$torch_backend}"
+    uv pip install torch torchvision torchaudio --torch-backend="${TORCH_BACKEND:-$torch_backend}"
+    # uv pip install torch==${TORCH_VERSION:-2.7.1} torchvision torchaudio --torch-backend="${TORCH_BACKEND:-$torch_backend}"
     uv pip install -r requirements.txt
 else
     hf auth login --token "$HF_PACKAGES"
