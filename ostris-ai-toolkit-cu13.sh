@@ -54,6 +54,7 @@ if [ -z "$HF_PACKAGES" ]; then
     # uv pip install https://github.com/mjun0812/flash-attention-prebuild-wheels/releases/download/v0.7.11/flash_attn-2.8.3+cu129torch2.8-cp312-cp312-linux_x86_64.whl
     uv pip install -r requirements.txt
     uv pip install https://github.com/mjun0812/flash-attention-prebuild-wheels/releases/download/v0.9.17/flash_attn-2.8.3+cu130torch2.12-cp312-cp312-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl
+    uv pip install seaborn
 else
     hf auth login --token "$HF_PACKAGES"
     # HF username extraction
