@@ -54,6 +54,8 @@ if [ -z "$HF_PACKAGES" ]; then
     # uv pip install https://github.com/mjun0812/flash-attention-prebuild-wheels/releases/download/v0.7.11/flash_attn-2.8.3+cu129torch2.8-cp312-cp312-linux_x86_64.whl
     uv pip install -r requirements.txt
     uv pip install https://github.com/mjun0812/flash-attention-prebuild-wheels/releases/download/v0.9.17/flash_attn-2.8.3+cu130torch2.12-cp312-cp312-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl
+    # uv pip install flash-attn-4 --prerelease=allow
+    # uv pip install "flash-attn-4[cu13]" --prerelease=allow
     uv pip install seaborn
 else
     hf auth login --token "$HF_PACKAGES"
@@ -63,14 +65,16 @@ else
     # ^[[1morgs: ^[[0m orgname123$
     HF_USERNAME=$(hf auth whoami 2>&1 | sed -E 's/\x1b\[[0-9;]*m//g' | awk '/^user:/ {print $2}')
     echo 'SETUP: Downloading HF packages'
-    hf download "$HF_USERNAME"/packages_cu129_torch28 --local-dir ./packages_cu129_torch28
-    hf download "$HF_USERNAME"/python_requirements --local-dir ./python_requirements
+    hf download "$HF_USERNAME"/packages_cu130_torch2_12_1 --local-dir /workspace/packages_cu130_torch2_12_1
+    hf download "$HF_USERNAME"/python_requirements --local-dir /workspace/python_requirements
     elapsed=$(time_diff "$start_time")
     echo "SETUP: $elapsed (HF packages download)"
     HF_USERNAME=""
     echo 'SETUP: Installing HF packages'
     # RTX PRO 6000 WS
-    uv pip install --find-links ./packages_cu129_torch28 --torch-backend=auto -r python_requirements/ostris_cu129_torch28_requirements.txt --no-index
+    uv pip install --find-links /workspace/packages_cu130_torch2_12_1 --torch-backend=auto -r /workspace/python_requirements/ostris_cu130_torch2_12_1_requirements.txt --no-index
+    # uv pip uninstall flash-attn-4
+    # uv pip install https://github.com/mjun0812/flash-attention-prebuild-wheels/releases/download/v0.9.17/flash_attn-2.8.3+cu130torch2.12-cp312-cp312-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl
     elapsed=$(time_diff "$start_time")
     echo "SETUP: $elapsed (HF packages installation)"
 fi
