@@ -74,10 +74,12 @@ else
     # hf auth whoami 2>&1 | cat -A
     # ^[[1muser: ^[[0m username123$
     # ^[[1morgs: ^[[0m orgname123$
-    HF_USERNAME=$(hf auth whoami 2>&1 | sed -E 's/\x1b\[[0-9;]*m//g' | awk '/^user:/ {print $2}')
-    if [[ -z "${HF_USERNAME}" ]]; then
-        HF_USERNAME=""
+    HF_USERNAME=$(hf auth whoami 2>&1 | sed -E 's/\x1b\[[0-9;]*m//g' | awk '$1=="user:" {print $2}' || true)
+    if [ -z "$HF_USERNAME" ]; then
+        echo "SETUP: ERROR: could not determine HF username (login failed?)" >&2
+        exit 1
     fi
+
     echo 'SETUP: Downloading HF packages'
     hf download "$HF_USERNAME"/python_requirements --local-dir ./python_requirements
     hf download "$HF_USERNAME"/packages_cu128_torch27 --local-dir ./packages_cu128_torch27
@@ -98,6 +100,30 @@ fi
 
 elapsed=$(time_diff "$start_time")
 echo "SETUP: $elapsed (HF packages installation)"
+
+
+# Disable Cloudflare quick tunnels (unused — direct SSH access)
+if [ -f /etc/supervisor/conf.d/tunnel_manager.conf ]; then
+    sed -i 's/^autostart=true/autostart=false/' /etc/supervisor/conf.d/tunnel_manager.conf
+    supervisorctl reread >/dev/null 2>&1 || true
+    supervisorctl update >/dev/null 2>&1 || true
+    supervisorctl stop tunnel_manager 2>/dev/null || true
+fi
+
+# Disable unused portal services (SSH-only workflow; frees ~140 MB)
+for svc in tensorboard cron jupyter syncthing; do
+    f="/etc/supervisor/conf.d/${svc}.conf"
+    if [ -f "$f" ]; then
+        sed -i 's/^autostart=true/autostart=false/' "$f"
+    fi
+done
+supervisorctl reread >/dev/null 2>&1 || true
+supervisorctl update >/dev/null 2>&1 || true
+for svc in tensorboard cron jupyter syncthing; do
+    supervisorctl stop "$svc" 2>/dev/null || true
+done
+pkill -x syncthing 2>/dev/null || true
+
 
 # Create Wan2GP startup scripts
 cat > /opt/supervisor-scripts/wan2gp.sh << 'EOL'
